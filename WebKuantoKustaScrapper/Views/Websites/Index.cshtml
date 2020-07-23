@@ -1,0 +1,38 @@
+﻿@model IEnumerable<WebKuantoKustaScrapper.Models.Website>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<p>
+	<a asp-action="Create">Adicionar novo site</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				Tracking dos sites
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.SiteUrl)
+				</td>
+				<td>
+					<div class="container">
+						<a class="btn btn-sm btn-success form-control m-1" asp-action="Edit" asp-route-id="@item.IdWebsite">Editar</a>
+						<a class="btn  btn-sm btn-info form-control m-1" asp-action="Details" asp-route-id="@item.IdWebsite">Detalhes</a>
+
+						<a class="btn  btn-sm btn-danger form-control m-1" asp-action="Delete" asp-route-id="@item.IdWebsite">Apagar</a>
+					</div>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

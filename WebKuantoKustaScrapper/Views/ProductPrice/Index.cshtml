@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WebKuantoKustaScrapper.Models.Product>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<div class="container">
+
+	<div class="row">
+
+		@foreach (var item in Model)
+		{
+		
+		
+			<div class="col-md-3">
+				<figure class="card card-product">
+					<div class="img-wrap">
+						<img src="@Html.DisplayFor(modelItem => item.Imagem)">
+						<a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
+					</div>
+					<figcaption class="info-wrap">
+						<h6 class="title text-dots"><a href="#">@Html.DisplayFor(modelItem => item.Nome)</a></h6>
+						<div class="action-wrap">
+							<a href="#" class="btn btn-primary btn-sm float-right"> Order </a>
+							<div class="price-wrap h5">
+								<span class="price-new">@Html.DisplayFor(modeItem => item.IdPrecoNavigation.PrecoAtual)</span>
+								<del class="price-old">$1980</del>
+							</div> <!-- price-wrap.// -->
+						</div> <!-- action-wrap -->
+					</figcaption>
+				</figure> <!-- card // -->
+			</div> <!-- col // -->
+		
+		}
+	</div> <!-- row.// -->
+</div>
+<!--container end-->
