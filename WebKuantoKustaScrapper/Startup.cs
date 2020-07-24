@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -56,6 +57,10 @@ namespace WebKuantoKustaScrapper
 				endpoints.MapControllerRoute(
 					name: "default",
 					pattern: "{controller=Home}/{action=Index}/{id?}");
+
+				endpoints.MapControllerRoute(
+					name: "SearchProduct",
+					pattern: "{controller=ProductPrice}/{action=Index}");
 			});
 		}
 	}

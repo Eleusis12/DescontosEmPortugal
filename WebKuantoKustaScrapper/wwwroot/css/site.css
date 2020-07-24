@@ -73,29 +73,73 @@ body {
 	line-height: 60px; /* Vertically center the text there */
 }
 
-.card-product .img-wrap {
-	border-radius: 3px 3px 0 0;
-	overflow: hidden;
-	position: relative;
-	height: 220px;
-	text-align: center;
+.bar-sort {
+	position: fixed;
+	padding: 2px;
+	z-index: 10000;
+	display: flex;
+	justify-content: space-between;
+	margin: auto;
+	width: 1110px;
 }
 
-	.card-product .img-wrap img {
-		max-height: 100%;
-		max-width: 100%;
-		object-fit: cover;
+.card-wrapper {
+	box-sizing border-box;
+	display: grid;
+	float: none;
+	line-height: normal;
+	position: static;
+	z-index: auto;
+	grid-template-columns: repeat(5, 1fr);
+	grid-auto-rows: 1fr;
+	grid-column-gap: 10px;
+	grid-row-gap: 10px;
+	margin: auto;
+	max-width: 1200px;
+}
+
+.card-product {
+	box-sizing: border-box;
+	display: flex;
+	float: left;
+	line-height: 28px;
+	max-width: 220px;
+	margin: auto;
+	z-index: auto;
+}
+
+	.card-product:hover {
+		text-shadow: 0px 2px 2px rgba(255, 255, 255, 0.4);
 	}
 
-.card-product .info-wrap {
-	overflow: hidden;
-	padding: 15px;
-	border-top: 1px solid #eee;
+	.card-product .img-wrap {
+		border-radius: 3px 3px 0 0;
+		overflow: hidden;
+		position: relative;
+		height: 220px;
+		text-align: center;
+	}
+
+	.card-product .info-wrap {
+		height: 148px;
+		overflow: hidden;
+		padding: 15px;
+		border-top: 1px solid #eee;
+	}
+
+.product-link {
+	color: #35373b;
 }
 
 .card-product .bottom-wrap {
 	padding: 15px;
 	border-top: 1px solid #eee;
+}
+
+.card-product .img-wrap img {
+	max-height: 100%;
+	max-width: 100%;
+	object-fit: cover;
 }
 
 .label-rating {

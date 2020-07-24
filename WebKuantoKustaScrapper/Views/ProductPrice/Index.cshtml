@@ -1,39 +1,113 @@
-﻿@model IEnumerable<WebKuantoKustaScrapper.Models.Product>
+﻿@model WebKuantoKustaScrapper.Helpers.PaginatedList<WebKuantoKustaScrapper.Models.Product>
 
 @{
 	ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="pb-2 mt-4 mb-2 border-bottom">As Melhores Promoções em Portugal</h1>
 
-<div class="container">
+<form asp-controller="ProductPrice" asp-action="Index" method="get">
 
-	<div class="row">
+	@*<select asp-for="Category" asp-items="Model.ToList">
+			<option value="">All</option>
+		</select>*@
 
-		@foreach (var item in Model)
-		{
-		
-		
-			<div class="col-md-3">
-				<figure class="card card-product">
-					<div class="img-wrap">
-						<img src="@Html.DisplayFor(modelItem => item.Imagem)">
-						<a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
-					</div>
-					<figcaption class="info-wrap">
-						<h6 class="title text-dots"><a href="#">@Html.DisplayFor(modelItem => item.Nome)</a></h6>
-						<div class="action-wrap">
-							<a href="#" class="btn btn-primary btn-sm float-right"> Order </a>
-							<div class="price-wrap h5">
-								<span class="price-new">@Html.DisplayFor(modeItem => item.IdPrecoNavigation.PrecoAtual)</span>
-								<del class="price-old">$1980</del>
-							</div> <!-- price-wrap.// -->
-						</div> <!-- action-wrap -->
-					</figcaption>
-				</figure> <!-- card // -->
-			</div> <!-- col // -->
-		
-		}
-	</div> <!-- row.// -->
+	@*<select asp-for="IdCategoriaNavigation"
+				asp-items="@(new SelectList(Model.EmployeesList,"Id","FullName"))">
+			<option>Please select one</option>
+		</select>*@
+
+	<div class="container">
+		<div class="row justify-content-between">
+			@*<button asp-action="Index" asp-route-orderBy="@ViewData["NameSortParm"]"
+						class=" form-control col-2 ">
+					@Html.DisplayNameFor(model => model.Nome)
+				</button>
+				<button asp-action="Index" asp-route-orderBy="@ViewData["DateSortParm"]"
+						class=" form-control col-2 ">
+					@Html.DisplayNameFor(model =>
+					model.IdPrecoNavigation.DataPrecoMaisBaixo)
+				</button>*@
+			<select asp-items="ViewBag.Categories" class=" form-control col-2 ">
+				<option selected="">Todos</option>
+			</select>
+			<input type="text" class="form-control col-9" placeholder="Pesquise.." name="q" value="@ViewData["currentFilter"]">
+			<a asp-action="Index">Voltar a ver todos os produtos</a>
+		</div>
+	</div>
+</form>
+
+@*<select class=" form-control col-2 ">
+		<option asp-action="Index" asp-route-orderBy="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Nome)</option>
+		<option asp-action="Index" asp-route-orderBy="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.IdPrecoNavigation.DataPrecoMaisBaixo)</option>
+	</select>*@
+
+<div class="container mt-1 mb-1 bg-light border border-dark   row rounded bar-sort">
+
+	<a asp-action="Index" asp-route-orderBy="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="col-4 border-right"> Nome</a>
+	<a asp-action="Index" asp-route-orderBy="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="col-4 border-right"> Preço</a>
+	<a asp-action="Index" asp-route-orderBy="@ViewData["PopularitySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="col-4 border-right">Popularidade</a>
 </div>
+<section class="card-wrapper mt-5">
+
+	@foreach (var item in Model)
+	{
+
+		<article class=" card card-product">
+			<div class="img-wrap">
+				<img src="@Html.DisplayFor(modelItem => item.Imagem)">
+			</div>
+			<figcaption class="info-wrap">
+				<h6 class="title text-dots"><a href="#" class="product-link">@Html.DisplayFor(modelItem => item.Nome)</a></h6>
+				<div class="action-wrap">
+					<a href="#" class="btn btn-primary btn-sm float-right "> Ver Produto </a>
+					<div class="price-wrap h5">
+						<span class="price-new">@Html.DisplayFor(modeItem => item.IdPrecoNavigation.PrecoAtual)€</span>
+					</div>
+				</div>
+			</figcaption>
+		</article>
+
+	}
+</section>
+
+@{
+	var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+	var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-orderBy="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+	Previous
+</a>
+<a asp-action="Index"
+   asp-route-orderBy="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+	Next
+</a>
 <!--container end-->
+
+@section Scripts
+{
+	<script>
+		console.log("1");
+
+		$(window).scroll(function (e) {
+			console.log("2");
+
+			var $el = $('.bar-sort');
+			var isPositionFixed = ($el.css('position') == 'fixed');
+			if ($(this).scrollTop() > 200 && !isPositionFixed) {
+				$el.css({ 'position': 'fixed', 'top': '0px' });
+			}
+			if ($(this).scrollTop() < 200 && isPositionFixed) {
+				$el.css({ 'position': 'static', 'top': '0px' });
+			}
+		});
+	</script>
+}
