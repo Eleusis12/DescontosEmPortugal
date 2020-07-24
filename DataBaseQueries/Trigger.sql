@@ -34,6 +34,7 @@ AS
 	END
 GO;
 
+
 ALTER TRIGGER CheckIfMinimumValueHasBeenReached 
 ON Preco 
 INSTEAD OF UPDATE 
@@ -47,49 +48,61 @@ AS
 		DECLARE @New_Product		BIT
 
 
+		
+		
+		
 
 
 		SELECT @ID_Preco = i.ID_Preco, @Valor_Atual =  I.Preco_Atual  FROM INSERTED I 
 
-		SELECT @Valor_Anterior= @Valor_Atual,	@Valor_MaisBaixo = Preco.Preco_MaisBaixo, @New_Product= New_Product FROM Preco	WHERE ID_Preco = @ID_Preco
+		SELECT @Valor_Anterior= Preco.Preco_Atual,	@Valor_MaisBaixo = Preco.Preco_MaisBaixo, @New_Product= New_Product FROM Preco	WHERE ID_Preco = @ID_Preco
 
 		
-			-- Alterou o preço pelo menos uma vez o que significa que o produto perde o estado de novo produto
-		IF ((@Valor_Atual < @Valor_Anterior OR @Valor_Atual > @Valor_Anterior) AND @New_Product=1  )
-			BEGIN
-				UPDATE PRECO
-				SET  New_Product=0, Soma= Soma+ @Valor_Atual , Contador= Contador + 1
-				WHERE ID_Preco = @ID_Preco	
-
 			
-
-	
-
-		IF(@Valor_Atual < @Valor_Anterior)
+		IF (@Valor_Atual != @Valor_Anterior   )
 			BEGIN
-				UPDATE PRECO
-				SET Preco_Atual = @Valor_Atual, Preco_MaisBaixo = @Valor_MaisBaixo, Preco_MaisBaixo_flag = 1, Data_Preco_Mais_Baixo	 = GETDATE(), New_Product=0
-				WHERE ID_Preco = @ID_Preco	
 
-					IF(@Valor_Atual < @Valor_MaisBaixo)
-					BEGIN
-						UPDATE PRECO
-						SET  Preco_MaisBaixo = @Valor_MaisBaixo, Preco_MaisBaixo_flag = 1, Data_Preco_Mais_Baixo = GETDATE()
-						WHERE ID_Preco = @ID_Preco	
-					END
+			IF(@New_Product=1)
+				BEGIN 
+					-- Alterou o preço pelo menos uma vez o que significa que o produto perde o estado de novo produto
+					UPDATE PRECO
+					SET  New_Product=0
+					WHERE ID_Preco = @ID_Preco	
+				END
+			
+				-- Atualizar o preço, caso este seja diferente do anterior
+			UPDATE PRECO
+			SET  Preco_Atual = @Valor_Atual, Soma= Soma+ @Valor_Atual , Contador= Contador + 1
+			WHERE ID_Preco = @ID_Preco	
 
 				
-			END
-		ELSE IF(@Valor_Atual > @Valor_Anterior)
-			BEGIN
-				UPDATE Preco
-				SET	Preco_Atual = @Valor_Atual, Preco_MaisBaixo_flag= 0
-				WHERE ID_Preco = @ID_Preco	
+				
 
+
+			IF(@Valor_Atual < @Valor_MaisBaixo)
+			BEGIN
+								
+				UPDATE PRECO
+				SET  Preco_MaisBaixo = @Valor_Atual, Preco_MaisBaixo_flag = 1, Data_Preco_Mais_Baixo = GETDATE()
+				WHERE ID_Preco = @ID_Preco	
 			END
+
+			ELSE	
+				BEGIN
+				
+					UPDATE PRECO
+					SET  Preco_MaisBaixo_flag = 0
+					WHERE ID_Preco = @ID_Preco	
+
+				END
+
+
+				
+				
+				
 			
 		END
-	
+
 
 		
 

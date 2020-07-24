@@ -73,7 +73,7 @@ GO;
 
 
 
-CREATE PROCEDURE IsNullOrEmpty 
+ALTER PROCEDURE IsNullOrEmpty 
 		@SomeVarcharParm varchar(max)
 AS
 BEGIN
@@ -155,12 +155,15 @@ ELSE
 		-- Preencher as tabelas
 	BEGIN
 
-
 	IF EXISTS (SELECT Product.ID FROM Product WHERE ID = @ID)
 		BEGIN
+		
 
 		SELECT @ID_Preco = Product.ID_Preco FROM Product WHERE ID = @ID
 
+		
+
+			print (@CurrentPrice)
 			--UPDATE
 			UPDATE Preco
 			SET PRECO.Preco_Atual = @CurrentPrice
@@ -169,12 +172,16 @@ ELSE
 			UPDATE Product
 			SET Popularidade = @Popularity
 			WHERE Product.ID = @ID
+
+			print (@CurrentPrice)
+
+			
 		END
 
 	ELSE
 		BEGIN
 			--INSERT
-
+		
 		
 			INSERT INTO [dbo].[Preco]
 						   (
@@ -223,6 +230,7 @@ ELSE
 END
 
 GO; 
+
 
 CREATE PROCEDURE GetCategoryID
 	@SearchID	INT
