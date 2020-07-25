@@ -4,13 +4,12 @@
 	ViewData["Title"] = "Index";
 }
 
-<p>
-	<a asp-action="Create">Adicionar novo site</a>
-</p>
-<table class="table">
+<a class="btn btn-sm btn-outline-secondary float-right mt-3 mb-3" asp-action="Create">Adicionar novo site</a>
+
+<table class="table table-hover ">
 	<thead>
 		<tr>
-			<th>
+			<th class="thead-dark ">
 				Tracking dos sites
 			</th>
 			<th></th>
@@ -21,7 +20,7 @@
 		{
 
 			<tr>
-				<td>
+				<td class="d-xl-table-cell">
 					@Html.DisplayFor(modelItem => item.SiteUrl)
 				</td>
 				<td>
