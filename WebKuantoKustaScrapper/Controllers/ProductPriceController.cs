@@ -15,22 +15,17 @@ namespace WebKuantoKustaScrapper.Controllers
 	{
 		private readonly ProdutosContext _context;
 
-		public string NameSort { get; set; }
-		public string DateSort { get; set; }
-		public string CurrentFilter { get; set; }
-		public string CurrentSort { get; set; }
-
-		public IList<Product> Products { get; set; }
-
 		public ProductPriceController(ProdutosContext context)
 		{
 			_context = context;
 		}
 
 		// GET: ProductPriceController
-		public async Task<ActionResult> IndexAsync(string orderBy, string currentFilter, string q, int? pageNumber)
+		public async Task<ActionResult> IndexAsync(int IdCategory, string orderBy, string currentFilter, string q, int? pageNumber)
+
 		{
 			var Categories = _context.Categoria.ToList();
+
 			var produtos = _context.Product.Include(x => x.IdCategoriaNavigation).Include(x => x.IdPrecoNavigation);
 
 			// Obtém as Categorias das pesquisas efetuadas anteriormente
@@ -47,6 +42,7 @@ namespace WebKuantoKustaScrapper.Controllers
 			ViewData["NameSortParm"] = orderBy == "Name" ? "name_desc" : "Name";
 			ViewData["DateSortParm"] = orderBy == "Date" ? "date_desc" : "Date";
 			ViewData["CurrentSort"] = orderBy;
+			ViewData["Categories"] = new SelectList(Categories, "Id", "Nome");
 
 			if (q != null)
 			{
@@ -62,6 +58,10 @@ namespace WebKuantoKustaScrapper.Controllers
 				LowestEverProducts = LowestEverProducts.Where(s => s.Nome.Contains(q)
 									   || s.Marca.Contains(q)
 									   || s.IdCategoriaNavigation.Nome.Contains(q));
+			}
+			if (IdCategory > 0)
+			{
+				LowestEverProducts = LowestEverProducts.Where(s => s.IdCategoria == IdCategory);
 			}
 
 			switch (orderBy)
@@ -92,6 +92,7 @@ namespace WebKuantoKustaScrapper.Controllers
 			}
 
 			int pageSize = 20;
+
 			return View(await PaginatedList<Product>.CreateAsync(LowestEverProducts.AsNoTracking(), pageNumber ?? 1, pageSize));
 
 			return new EmptyResult();

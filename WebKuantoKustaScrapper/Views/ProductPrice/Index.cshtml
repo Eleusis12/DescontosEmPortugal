@@ -6,99 +6,140 @@
 
 <h1 class="pb-2 mt-4 mb-2 border-bottom">As Melhores Promoções em Portugal</h1>
 
-<form asp-controller="ProductPrice" asp-action="Index" method="get">
-
-	@*<select asp-for="Category" asp-items="Model.ToList">
-			<option value="">All</option>
-		</select>*@
-
-	@*<select asp-for="IdCategoriaNavigation"
-				asp-items="@(new SelectList(Model.EmployeesList,"Id","FullName"))">
-			<option>Please select one</option>
-		</select>*@
-
-	<div class="container">
-		<div class="row justify-content-between">
-			@*<button asp-action="Index" asp-route-orderBy="@ViewData["NameSortParm"]"
-						class=" form-control col-2 ">
-					@Html.DisplayNameFor(model => model.Nome)
-				</button>
-				<button asp-action="Index" asp-route-orderBy="@ViewData["DateSortParm"]"
-						class=" form-control col-2 ">
-					@Html.DisplayNameFor(model =>
-					model.IdPrecoNavigation.DataPrecoMaisBaixo)
-				</button>*@
-			<select asp-items="ViewBag.Categories" class=" form-control col-2 ">
-				<option selected="">Todos</option>
-			</select>
-			<input type="text" class="form-control col-9" placeholder="Pesquise.." name="q" value="@ViewData["currentFilter"]">
-			<a asp-action="Index">Voltar a ver todos os produtos</a>
-		</div>
-	</div>
-</form>
-
-@*<select class=" form-control col-2 ">
-		<option asp-action="Index" asp-route-orderBy="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Nome)</option>
-		<option asp-action="Index" asp-route-orderBy="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.IdPrecoNavigation.DataPrecoMaisBaixo)</option>
+@*<select asp-for="Category" asp-items="Model.ToList">
+		<option value="">All</option>
 	</select>*@
 
-<div class="container mt-1 mb-1 bg-light border border-dark   row rounded bar-sort">
+@*<select asp-for="IdCategoriaNavigation"
+			asp-items="@(new SelectList(Model.EmployeesList,"Id","FullName"))">
+		<option>Please select one</option>
+	</select>*@
 
-	<a asp-action="Index" asp-route-orderBy="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="col-4 border-right"> Nome</a>
-	<a asp-action="Index" asp-route-orderBy="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="col-4 border-right"> Preço</a>
-	<a asp-action="Index" asp-route-orderBy="@ViewData["PopularitySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="col-4 border-right">Popularidade</a>
-</div>
-<section class="card-wrapper mt-5">
+@if (Model.Count > 0)
+{
+	<form asp-controller="ProductPrice" asp-action="Index" method="get">
 
-	@foreach (var item in Model)
-	{
+		<div class="container">
+			<div class="row justify-content-between">
+				@*<button asp-action="Index" asp-route-orderBy="@ViewData["NameSortParm"]"
+							class=" form-control col-2 ">
+						@Html.DisplayNameFor(model => model.Nome)
+					</button>
+					<button asp-action="Index" asp-route-orderBy="@ViewData["DateSortParm"]"
+							class=" form-control col-2 ">
+						@Html.DisplayNameFor(model =>
+						model.IdPrecoNavigation.DataPrecoMaisBaixo)
+					</button>*@
 
-		<article class=" card card-product">
-			<div class="img-wrap">
-				<img src="@Html.DisplayFor(modelItem => item.Imagem)">
+				<select asp-for="IdCategory" asp-items="ViewBag.Categories" name="IdCategory" onchange="this.form.submit()" class=" form-control col-2 ">
+					<option selected="">Todos</option>
+				</select>
+				<input type="text" class="form-control col-9" placeholder="Pesquise.." name="q" value="@ViewData[" currentFilter"]">
+				<a asp-action="Index">Voltar a ver todos os produtos</a>
 			</div>
-			<figcaption class="info-wrap">
-				<h6 class="title text-dots"><a href="#" class="product-link">@Html.DisplayFor(modelItem => item.Nome)</a></h6>
-				<div class="action-wrap">
-					<a href="#" class="btn btn-primary btn-sm float-right "> Ver Produto </a>
-					<div class="price-wrap h5">
-						<span class="price-new">@Html.DisplayFor(modeItem => item.IdPrecoNavigation.PrecoAtual)€</span>
-					</div>
+		</div>
+	</form>
+
+	@*<select class=" form-control col-2 ">
+			<option asp-action="Index" asp-route-orderBy="@ViewData[" NameSortParm"]">@Html.DisplayNameFor(model => model.Nome)</option>
+			<option asp-action="Index" asp-route-orderBy="@ViewData[" DateSortParm"]">@Html.DisplayNameFor(model => model.IdPrecoNavigation.DataPrecoMaisBaixo)</option>
+		</select>*@
+
+	<div class="container mt-1 mb-1 bg-light border border-dark   row rounded bar-sort">
+
+		<a asp-action="Index" asp-route-orderBy="@ViewData[" NameSortParm"]" asp-route-currentFilter="@ViewData[" CurrentFilter"]" class="col-4 border-right"> Nome</a>
+		<a asp-action="Index" asp-route-orderBy="@ViewData[" DateSortParm"]" asp-route-currentFilter="@ViewData[" CurrentFilter"]" class="col-4 border-right"> Preço</a>
+		<a asp-action="Index" asp-route-orderBy="@ViewData[" PopularitySortParm"]" asp-route-currentFilter="@ViewData[" CurrentFilter"]" class="col-4 border-right">Popularidade</a>
+	</div>
+	<section class="card-wrapper mt-5">
+
+		@foreach (var item in Model)
+		{
+
+			<article class=" card card-product">
+				<div class="img-wrap">
+					<img src="@Html.DisplayFor(modelItem => item.Imagem)">
 				</div>
-			</figcaption>
-		</article>
+				<figcaption class="info-wrap">
+					<h6 class="title text-dots"><a href="#" class="product-link">@Html.DisplayFor(modelItem => item.Nome)</a></h6>
+					<div class="action-wrap">
+						<a href="@Html.DisplayFor(modeItem => item.Website)" class="btn btn-primary btn-sm float-right "> Ver Produto </a>
+						<div class="price-wrap h5">
+							<span class="price-new">@Html.DisplayFor(modeItem => item.IdPrecoNavigation.PrecoAtual)€</span>
+						</div>
+					</div>
+				</figcaption>
+			</article>
 
-	}
-</section>
+		}
+	</section>
 
-@{
 	var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
 	var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+	<div class="mt-3 p-1">
+		<ul class="pagination justify-content-center">
+			<li class="page-item disabled">
+				<a asp-action="Index"
+				   asp-route-orderBy="@ViewData[" CurrentSort"]"
+				   asp-route-pageNumber="@(Model.PageIndex - 1)"
+				   asp-route-currentFilter="@ViewData[" CurrentFilter"]"
+				   class=" page-link @prevDisabled">
+					&laquo;
+				</a>
+			</li>
+			<li class="page-item active">
+				<a class="page-link" asp-action="Index"
+				   asp-route-orderBy="@ViewData[" CurrentSort"]"
+				   asp-route-pageNumber="@(Model.PageIndex )"
+				   asp-route-currentFilter="@ViewData[" CurrentFilter"]">@(Model.PageIndex )</a>
+			</li>
+			<li class="page-item">
+				<a class="page-link" asp-action="Index"
+				   asp-route-orderBy="@ViewData[" CurrentSort"]"
+				   asp-route-pageNumber="@(Model.PageIndex + 1)"
+				   asp-route-currentFilter="@ViewData[" CurrentFilter"]">@(Model.PageIndex + 1)</a>
+			</li>
+			<li class="page-item">
+				<a class="page-link" asp-action="Index"
+				   asp-route-orderBy="@ViewData[" CurrentSort"]"
+				   asp-route-pageNumber="@(Model.PageIndex + 2)"
+				   asp-route-currentFilter="@ViewData[" CurrentFilter"]">@(Model.PageIndex + 2)</a>
+			</li>
+			<li class="page-item">
+				<a class="page-link" asp-action="Index"
+				   asp-route-orderBy="@ViewData[" CurrentSort"]"
+				   asp-route-pageNumber="@(Model.PageIndex +3 )"
+				   asp-route-currentFilter="@ViewData[" CurrentFilter"]">@(Model.PageIndex + 3)</a>
+			</li>
+			<li class="page-item">
+				<a class="page-link" asp-action="Index"
+				   asp-route-orderBy="@ViewData[" CurrentSort"]"
+				   asp-route-pageNumber="@(Model.PageIndex + 4)"
+				   asp-route-currentFilter="@ViewData[" CurrentFilter"]">@(Model.PageIndex + 4)</a>
+			</li>
+			<li class="page-item ">
+				<a class="page-link @nextDisabled" asp-action="Index"
+				   asp-route-orderBy="@ViewData[" CurrentSort"]"
+				   asp-route-pageNumber="@(Model.PageIndex + 1)"
+				   asp-route-currentFilter="@ViewData[" CurrentFilter"]">
+					&raquo;
+				</a>
+			</li>
+		</ul>
+	</div>
 }
 
-<a asp-action="Index"
-   asp-route-orderBy="@ViewData["CurrentSort"]"
-   asp-route-pageNumber="@(Model.PageIndex - 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-default @prevDisabled">
-	Previous
-</a>
-<a asp-action="Index"
-   asp-route-orderBy="@ViewData["CurrentSort"]"
-   asp-route-pageNumber="@(Model.PageIndex + 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-default @nextDisabled">
-	Next
-</a>
-<!--container end-->
-
-@section Scripts
+else
 {
+	<h1>Não foi possível encontrar nenhum produto</h1>
+}
+<!--container end-->
+@section Scripts
+	{
 	<script>
-		console.log("1");
 
 		$(window).scroll(function (e) {
-			console.log("2");
 
 			var $el = $('.bar-sort');
 			var isPositionFixed = ($el.css('position') == 'fixed');
