@@ -32,12 +32,17 @@
 	}
 
 	.card-product .img-wrap {
-		border-radius: 3px 3px 0 0;
 		overflow: hidden;
 		position: relative;
 		height: 220px;
-		text-align: center;
+		margin: auto;
+		display: block;
 	}
+
+		.card-product .img-wrap .product-image {
+			display: block;
+			margin: auto;
+		}
 
 	.card-product .info-wrap {
 		height: 148px;

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using WebKuantoKustaScrapper.Helpers;
 using WebKuantoKustaScrapper.Models;
 using WebKuantoKustaScrapper.ViewModel;
@@ -66,36 +67,19 @@ namespace WebKuantoKustaScrapper.Controllers
 				LowestEverProducts = LowestEverProducts.Where(s => s.IdCategoria == IdCategory);
 			}
 
-			switch (orderBy)
+			LowestEverProducts = orderBy switch
 			{
-				case "pop_desc":
-					LowestEverProducts = LowestEverProducts.OrderByDescending(s => s.Popularidade);
-					break;
-
-				case "name_desc":
-					LowestEverProducts = LowestEverProducts.OrderByDescending(s => s.Nome);
-					break;
-
-				case "Name":
-					LowestEverProducts = LowestEverProducts.OrderBy(s => s.Nome);
-					break;
-
-				case "Date":
-					LowestEverProducts = LowestEverProducts.OrderBy(s => s.IdPrecoNavigation.DataPrecoMaisBaixo);
-					break;
-
-				case "date_desc":
-					LowestEverProducts = LowestEverProducts.OrderByDescending(s => s.IdPrecoNavigation.DataPrecoMaisBaixo);
-					break;
-
-				default:
-					LowestEverProducts = LowestEverProducts.OrderBy(s => s.Popularidade);
-					break;
-			}
-
+				"pop_desc" => LowestEverProducts.OrderByDescending(s => s.Popularidade),
+				"name_desc" => LowestEverProducts.OrderByDescending(s => s.Nome),
+				"Name" => LowestEverProducts.OrderBy(s => s.Nome),
+				"Date" => LowestEverProducts.OrderBy(s => s.IdPrecoNavigation.DataPrecoMaisBaixo),
+				"date_desc" => LowestEverProducts.OrderByDescending(s => s.IdPrecoNavigation.DataPrecoMaisBaixo),
+				_ => LowestEverProducts.OrderBy(s => s.Popularidade),
+			};
 			int pageSize = 20;
 
-			return View(await PaginatedListProducts<Product>.CreateAsync(LowestEverProducts.AsNoTracking(), pageNumber ?? 1, pageSize));
+			return View(await PaginatedListProducts<Product>.CreateAsync(
+				LowestEverProducts.AsNoTracking(), pageNumber ?? 1, pageSize));
 
 			return new EmptyResult();
 		}
@@ -107,15 +91,56 @@ namespace WebKuantoKustaScrapper.Controllers
 				return NotFound();
 			}
 
-			var product = await _context.Product.Include(x => x.IdCategoriaNavigation).Include(x => x.IdPrecoNavigation)
-				.FirstOrDefaultAsync(m => m.Id == id)
-				;
+			var product = await _context.Product.Include(x => x.IdCategoriaNavigation).Include(x => x.IdPrecoNavigation).Include(x => x.IdPrecoNavigation.PrecoVariacoes)
+				.FirstOrDefaultAsync(m => m.Id == id);
+
 			if (product == null)
 			{
 				return NotFound();
 			}
 
-			return View(product);
+			ChartJsViewModel chartJS = new ChartJsViewModel();
+			ChartJS chart = new ChartJS();
+			Data data = new Data();
+			Dataset dataset = new Dataset();
+			Options options = new Options();
+
+			chartJS.Product = product;
+
+			// Queremos um gráfico linear
+
+			List<Tuple<string, float>> dataList = new List<Tuple<string, float>>();
+			foreach (var item in product.IdPrecoNavigation.PrecoVariacoes)
+			{
+				// Queremos as datas assim com as mudanças  de preço
+				dataList.Add(Tuple.Create(item.DataAlteracao.ToString(), item.Preco));
+			}
+
+			dataList = dataList.OrderBy(o => o.Item1).ToList();
+
+			String[] labelsArray = dataList.Select(o => o.Item1).ToArray();
+			float[] dataArray = dataList.Select(o => o.Item2).ToArray();
+
+			data.labels = labelsArray;
+
+			//chart.data.datasets.;
+
+			dataset.label = product.Nome;
+			dataset.data = dataArray;
+			dataset.backgroundColor = new string[] { "rgba(105, 0, 132, .2)" };
+			dataset.borderColor = new string[] { "rgba(200, 99, 132, .7)" };
+			dataset.borderWidth = 2;
+
+			data.datasets = new Dataset[] { dataset };
+
+			chart.type = "line";
+			options.responsive = true;
+			chart.options = options;
+			chart.data = data;
+
+			chartJS.Chart = chart;
+
+			return View(chartJS);
 		}
 	}
 }

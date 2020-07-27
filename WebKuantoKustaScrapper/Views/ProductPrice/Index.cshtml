@@ -60,7 +60,8 @@
 
 			<article class=" card card-product">
 				<div class="img-wrap">
-					<img src="@Html.DisplayFor(modelItem => item.Imagem)">
+					<img class="product-image" src="@Html.DisplayFor(modelItem => item.Imagem)">
+					<a class="btn btn-link float-md-left" asp-action="Details" asp-route-id="@item.Id">Ver mais...</a>
 				</div>
 				<figcaption class="info-wrap">
 					<h6 class="mb-4 "><a href="#" class="product-link">@Html.DisplayFor(modelItem => item.Nome)</a></h6>

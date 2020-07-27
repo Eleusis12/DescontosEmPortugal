@@ -27,7 +27,7 @@ namespace WebKuantoKustaScrapper.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=Produtos;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=Produtos;Trusted_Connection=True;");
             }
         }
 
@@ -69,9 +69,12 @@ namespace WebKuantoKustaScrapper.Models
 
             modelBuilder.Entity<PrecoVariacoes>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.IdVariacao)
+                    .HasName("PK__Preco_Va__0A0792F206C57DFA");
 
                 entity.ToTable("Preco_Variacoes");
+
+                entity.Property(e => e.IdVariacao).HasColumnName("ID_Variacao");
 
                 entity.Property(e => e.DataAlteracao)
                     .HasColumnName("Data_Alteracao")
@@ -80,10 +83,9 @@ namespace WebKuantoKustaScrapper.Models
                 entity.Property(e => e.IdPreco).HasColumnName("ID_Preco");
 
                 entity.HasOne(d => d.IdPrecoNavigation)
-                    .WithMany()
+                    .WithMany(p => p.PrecoVariacoes)
                     .HasForeignKey(d => d.IdPreco)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Preco_Var__ID_Pr__7DCDAAA2");
+                    .HasConstraintName("FK__Preco_Var__ID_Pr__0E04126B");
             });
 
             modelBuilder.Entity<Product>(entity =>
