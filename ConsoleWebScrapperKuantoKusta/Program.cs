@@ -2,11 +2,13 @@
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using Colorful;
+using CommandLine;
 using ConsoleTables;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,7 +21,7 @@ namespace ConsoleWebScrapperKuantoKusta
 {
 	internal class Program
 	{
-		public static Options M_Options { get; private set; }
+		public static WebScrapper.Models.Options M_Options { get; private set; }
 
 		private static async Task Main(string[] args)
 		{
@@ -30,47 +32,19 @@ namespace ConsoleWebScrapperKuantoKusta
 			styleSheet.AddStyle(@"\[(WARNING)\]", Color.Yellow);
 			styleSheet.AddStyle(@"\[(CRITICAL)\]", Color.Red);
 
-			M_Options = new Options();
+			M_Options = new WebScrapper.Models.Options();
 			M_Options.StyleConsole = styleSheet;
 
 			Colorful.Console.WriteAscii("KuantoKusta Scrapper", Color.FromArgb(244, 212, 255));
 			Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Bem vindo ao Programa", styleSheet);
 
-			if (args.Length >= 1)
-			{
-				switch (args[0])
-				{
-					case "--add":
-						if (args.Length == 2)
-						{
-							WebsiteDetails websiteDetails = new WebsiteDetails();
-							websiteDetails.WebsiteUrl = args[1];
-							websiteDetails.Category = args[1].Substring(args[1].LastIndexOf('/') + 1);
-							AcessDataBase.InsertWebsiteDetailsIntoDataBase(websiteDetails);
-						}
-						else if (args.Length == 3)
-						{
-							WebsiteDetails websiteDetails = new WebsiteDetails();
-							websiteDetails.WebsiteUrl = args[1];
-							websiteDetails.Category = args[2];
-							AcessDataBase.InsertWebsiteDetailsIntoDataBase(websiteDetails);
-						}
+			Parser.Default.ParseArguments<Options>(args)
+			  .WithParsed(Run)
+			  .WithNotParsed(HandleParseError);
 
-						break;
+			Colorful.Console.ReadKey();
 
-					case "--file":
-						if (args.Length == 2)
-						{
-							ReadWebsiteDetailsFromFile(args[1]);
-						}
-
-						break;
-
-					default:
-						throw new ArgumentOutOfRangeException();
-						break;
-				}
-			}
+			//}
 
 			WebScrappingPage scrappingPage = new WebScrappingPage();
 
@@ -239,6 +213,49 @@ namespace ConsoleWebScrapperKuantoKusta
 			}
 
 			return result;
+		}
+
+		private static void HandleParseError(IEnumerable<Error> errs)
+		{
+			if (errs.IsVersion())
+			{
+				Colorful.Console.WriteLine("Version Request");
+				return;
+			}
+
+			if (errs.IsHelp())
+			{
+				Colorful.Console.WriteLine("Help Request");
+				return;
+			}
+			Colorful.Console.WriteLine("Parser Fail");
+		}
+
+		private static void Run(Options opts)
+		{
+			if (opts.InputWebsites != null)
+			{
+				foreach (string website in opts.InputWebsites)
+				{
+					// Verificar se estamos perante um website
+					Uri uriResult;
+					bool result = Uri.TryCreate(website, UriKind.Absolute, out uriResult)
+						&& (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+					if (result == true && website.Contains("kuantokusta"))
+					{
+						WebsiteDetails websiteDetails = new WebsiteDetails();
+						websiteDetails.WebsiteUrl = website;
+						websiteDetails.Category = website.Substring(website.LastIndexOf('/') + 1);
+						AcessDataBase.InsertWebsiteDetailsIntoDataBase(websiteDetails);
+					}
+				}
+			}
+
+			if (File.Exists(opts.filename))
+			{
+				ReadWebsiteDetailsFromFile(opts.filename);
+			}
 		}
 	}
 }

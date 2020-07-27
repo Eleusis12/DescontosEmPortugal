@@ -44,6 +44,17 @@ CREATE TABLE Preco(
 	PRIMARY KEY(ID_Preco)
 );
 
+CREATE TABLE Preco_Variacoes(
+	ID_Preco				INT				NOT NULL,
+	Preco					INT				NOT NULL,
+	Data_Alteracao			Date			NOT NULL,
+
+	PRIMARY KEY (ID_Preco),
+	FOREIGN KEY (ID_Preco) REFERENCES Preco(ID_Preco)
+
+
+);
+
 CREATE TABLE Product(
 	ID				VARCHAR(50)		NOT NULL,					
 	Nome			VARCHAR(80)		NOT NULL,
