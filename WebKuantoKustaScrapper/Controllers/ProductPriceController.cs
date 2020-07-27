@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebKuantoKustaScrapper.Helpers;
 using WebKuantoKustaScrapper.Models;
+using WebKuantoKustaScrapper.ViewModel;
 
 namespace WebKuantoKustaScrapper.Controllers
 {
@@ -93,9 +95,27 @@ namespace WebKuantoKustaScrapper.Controllers
 
 			int pageSize = 20;
 
-			return View(await PaginatedList<Product>.CreateAsync(LowestEverProducts.AsNoTracking(), pageNumber ?? 1, pageSize));
+			return View(await PaginatedListProducts<Product>.CreateAsync(LowestEverProducts.AsNoTracking(), pageNumber ?? 1, pageSize));
 
 			return new EmptyResult();
+		}
+
+		public async Task<IActionResult> Details(string? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var product = await _context.Product.Include(x => x.IdCategoriaNavigation).Include(x => x.IdPrecoNavigation)
+				.FirstOrDefaultAsync(m => m.Id == id)
+				;
+			if (product == null)
+			{
+				return NotFound();
+			}
+
+			return View(product);
 		}
 	}
 }

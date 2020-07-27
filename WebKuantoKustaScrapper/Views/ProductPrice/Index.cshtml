@@ -1,4 +1,4 @@
-﻿@model WebKuantoKustaScrapper.Helpers.PaginatedList<WebKuantoKustaScrapper.Models.Product>
+﻿@model WebKuantoKustaScrapper.Helpers.PaginatedListProducts<WebKuantoKustaScrapper.Models.Product>
 
 @{
 	ViewData["Title"] = "Index";
@@ -31,10 +31,10 @@
 						model.IdPrecoNavigation.DataPrecoMaisBaixo)
 					</button>*@
 
-				<select asp-for="IdCategory" asp-items="ViewBag.Categories" name="IdCategory" onchange="this.form.submit()" class=" form-control col-2 ">
+				<select asp-items="ViewBag.Categories" name="IdCategory" onchange="this.form.submit()" class=" form-control col-2 ">
 					<option selected="">Todos</option>
 				</select>
-				<input type="text" class="form-control col-9" placeholder="Pesquise.." name="q" value="@ViewData[" currentFilter"]">
+				<input type="text" class="form-control col-9" placeholder="Pesquise.." name="q" value="@ViewData["currentFilter"]">
 				<a asp-action="Index">Voltar a ver todos os produtos</a>
 			</div>
 		</div>
@@ -44,12 +44,14 @@
 			<option asp-action="Index" asp-route-orderBy="@ViewData[" NameSortParm"]">@Html.DisplayNameFor(model => model.Nome)</option>
 			<option asp-action="Index" asp-route-orderBy="@ViewData[" DateSortParm"]">@Html.DisplayNameFor(model => model.IdPrecoNavigation.DataPrecoMaisBaixo)</option>
 		</select>*@
+	<div class="container">
 
-	<div class="container mt-1 mb-1 bg-light border border-dark   row rounded bar-sort">
+		<div class=" row mt-1 mb-1 bg-light border border-dark rounded bar-sort">
 
-		<a asp-action="Index" asp-route-orderBy="@ViewData[" NameSortParm"]" asp-route-currentFilter="@ViewData[" CurrentFilter"]" class="col-4 border-right"> Nome</a>
-		<a asp-action="Index" asp-route-orderBy="@ViewData[" DateSortParm"]" asp-route-currentFilter="@ViewData[" CurrentFilter"]" class="col-4 border-right"> Preço</a>
-		<a asp-action="Index" asp-route-orderBy="@ViewData[" PopularitySortParm"]" asp-route-currentFilter="@ViewData[" CurrentFilter"]" class="col-4 border-right">Popularidade</a>
+			<a asp-action="Index" asp-route-orderBy="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="col-4 border-right"> Nome</a>
+			<a asp-action="Index" asp-route-orderBy="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="col-4 border-right"> Preço</a>
+			<a asp-action="Index" asp-route-orderBy="@ViewData["PopularitySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="col-4 border-right">Popularidade</a>
+		</div>
 	</div>
 	<section class="card-wrapper mt-5">
 
@@ -65,6 +67,7 @@
 					<div class="action-wrap">
 						<a href="@Html.DisplayFor(modeItem => item.Website)" class="btn btn-primary btn-sm float-right "> Ver Produto </a>
 						<div class="price-wrap h5">
+							<span class="price-old"> Média:@( String.Format("{0:0.00}", item.IdPrecoNavigation.Soma / item.IdPrecoNavigation.Contador))€</span>
 							<span class="price-new">@Html.DisplayFor(modeItem => item.IdPrecoNavigation.PrecoAtual)€</span>
 						</div>
 					</div>
@@ -81,48 +84,48 @@
 		<ul class="pagination justify-content-center">
 			<li class="page-item disabled">
 				<a asp-action="Index"
-				   asp-route-orderBy="@ViewData[" CurrentSort"]"
+				   asp-route-orderBy="@ViewData["CurrentSort"]"
 				   asp-route-pageNumber="@(Model.PageIndex - 1)"
-				   asp-route-currentFilter="@ViewData[" CurrentFilter"]"
+				   asp-route-currentFilter="@ViewData["CurrentFilter"]"
 				   class=" page-link @prevDisabled">
 					&laquo;
 				</a>
 			</li>
 			<li class="page-item active">
 				<a class="page-link" asp-action="Index"
-				   asp-route-orderBy="@ViewData[" CurrentSort"]"
+				   asp-route-orderBy="@ViewData["CurrentSort"]"
 				   asp-route-pageNumber="@(Model.PageIndex )"
-				   asp-route-currentFilter="@ViewData[" CurrentFilter"]">@(Model.PageIndex )</a>
+				   asp-route-currentFilter="@ViewData["CurrentFilter"]">@(Model.PageIndex )</a>
 			</li>
 			<li class="page-item">
 				<a class="page-link" asp-action="Index"
-				   asp-route-orderBy="@ViewData[" CurrentSort"]"
+				   asp-route-orderBy="@ViewData["CurrentSort"]"
 				   asp-route-pageNumber="@(Model.PageIndex + 1)"
-				   asp-route-currentFilter="@ViewData[" CurrentFilter"]">@(Model.PageIndex + 1)</a>
+				   asp-route-currentFilter="@ViewData["CurrentFilter"]">@(Model.PageIndex + 1)</a>
 			</li>
 			<li class="page-item">
 				<a class="page-link" asp-action="Index"
-				   asp-route-orderBy="@ViewData[" CurrentSort"]"
+				   asp-route-orderBy="@ViewData["CurrentSort"]"
 				   asp-route-pageNumber="@(Model.PageIndex + 2)"
-				   asp-route-currentFilter="@ViewData[" CurrentFilter"]">@(Model.PageIndex + 2)</a>
+				   asp-route-currentFilter="@ViewData["CurrentFilter"]">@(Model.PageIndex + 2)</a>
 			</li>
 			<li class="page-item">
 				<a class="page-link" asp-action="Index"
-				   asp-route-orderBy="@ViewData[" CurrentSort"]"
+				   asp-route-orderBy="@ViewData["CurrentSort"]"
 				   asp-route-pageNumber="@(Model.PageIndex +3 )"
-				   asp-route-currentFilter="@ViewData[" CurrentFilter"]">@(Model.PageIndex + 3)</a>
+				   asp-route-currentFilter="@ViewData["CurrentFilter"]">@(Model.PageIndex + 3)</a>
 			</li>
 			<li class="page-item">
 				<a class="page-link" asp-action="Index"
-				   asp-route-orderBy="@ViewData[" CurrentSort"]"
+				   asp-route-orderBy="@ViewData["CurrentSort"]"
 				   asp-route-pageNumber="@(Model.PageIndex + 4)"
-				   asp-route-currentFilter="@ViewData[" CurrentFilter"]">@(Model.PageIndex + 4)</a>
+				   asp-route-currentFilter="@ViewData["CurrentFilter"]">@(Model.PageIndex + 4)</a>
 			</li>
 			<li class="page-item ">
 				<a class="page-link @nextDisabled" asp-action="Index"
-				   asp-route-orderBy="@ViewData[" CurrentSort"]"
+				   asp-route-orderBy="@ViewData["CurrentSort"]"
 				   asp-route-pageNumber="@(Model.PageIndex + 1)"
-				   asp-route-currentFilter="@ViewData[" CurrentFilter"]">
+				   asp-route-currentFilter="@ViewData["CurrentFilter"]">
 					&raquo;
 				</a>
 			</li>
@@ -144,7 +147,7 @@ else
 			var $el = $('.bar-sort');
 			var isPositionFixed = ($el.css('position') == 'fixed');
 			if ($(this).scrollTop() > 200 && !isPositionFixed) {
-				$el.css({ 'position': 'fixed', 'top': '0px' });
+				$el.css({ 'position': 'fixed', 'top': '0px', 'left': '0px', 'width': '100%' });
 			}
 			if ($(this).scrollTop() < 200 && isPositionFixed) {
 				$el.css({ 'position': 'static', 'top': '0px' });
