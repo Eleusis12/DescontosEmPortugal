@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ConsoleWebScrapperKuantoKusta": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false
+    }
+  }
+}
