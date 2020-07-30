@@ -17,11 +17,11 @@
 
 @if (Model.Count > 0)
 {
-	<form asp-controller="ProductPrice" asp-action="Index" method="get">
+	<div class="container-fluid">
+		<form asp-controller="ProductPrice" asp-action="Index" method="get">
 
-		<div class="container">
-			<div class="row justify-content-between">
-				@*<button asp-action="Index" asp-route-orderBy="@ViewData["NameSortParm"]"
+			<div class="d-inline">
+				@*<button asp-action="Index" asp-route-sortBy="@ViewData["NameSortParm"]"
 							class=" form-control col-2 ">
 						@Html.DisplayNameFor(model => model.Nome)
 					</button>
@@ -31,14 +31,25 @@
 						model.IdPrecoNavigation.DataPrecoMaisBaixo)
 					</button>*@
 
-				<select asp-items="ViewBag.Categories" name="IdCategory" onchange="this.form.submit()" class=" form-control col-2 ">
+				<select asp-items="ViewBag.Categories" name="categoria" onchange="this.form.submit()" class=" form-control col-2 ">
 					<option selected="">Todos</option>
 				</select>
-				<input type="text" class="form-control col-9" placeholder="Pesquise.." name="q" value="@ViewData["currentFilter"]">
-				<a asp-action="Index">Voltar a ver todos os produtos</a>
 			</div>
+		</form>
+		<form asp-controller="ProductPrice" asp-action="Index" method="get" asp-route-q="@ViewData["CurrentSearch"]">
+			<input type="text" class="form-control col-9 " placeholder="Pesquise.." name="q" value="@ViewData["CurrentSearch"]">
+			<a asp-action="Index">Voltar a ver todos os produtos</a>
+		</form>
+	</div>
+
+	<div class="container">
+		<div class="container">
+			<form asp-controller="ProductPrice" asp-action="Index" method="get" asp-route-q="@ViewData["CurrentSearch"]">
+				<input type="checkbox" name="lowestPriceEver" value="true" asp-action="Index" onchange="this.form.submit()" />
+				<label class="text-info">Lowest Price Ever</label>
+			</form>
 		</div>
-	</form>
+	</div>
 
 	@*<select class=" form-control col-2 ">
 			<option asp-action="Index" asp-route-orderBy="@ViewData[" NameSortParm"]">@Html.DisplayNameFor(model => model.Nome)</option>
@@ -48,9 +59,10 @@
 
 		<div class=" row mt-1 mb-1 bg-light border border-dark rounded bar-sort">
 
-			<a asp-action="Index" asp-route-orderBy="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="col-4 border-right"> Nome</a>
-			<a asp-action="Index" asp-route-orderBy="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="col-4 border-right"> Preço</a>
-			<a asp-action="Index" asp-route-orderBy="@ViewData["PopularitySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="col-4 border-right">Popularidade</a>
+			<a asp-action="Index" asp-route-categoria="@TempData["CurrentCategory"]" asp-route-sortBy="@TempData["NameSortParm"]" asp-route-q="@ViewData["CurrentSearch"]" class="col-3 border-right"> Nome</a>
+			<a asp-action="Index" asp-route-categoria="@TempData["CurrentCategory"]" asp-route-sortBy="@TempData["PriceSortParm"]" asp-route-q="@ViewData["CurrentSearch"]" class="col-3 border-right"> Preço</a>
+			<a asp-action="Index" asp-route-categoria="@TempData["CurrentCategory"]" asp-route-sortBy="@TempData["PopularitySortParm"]" asp-route-q="@ViewData["CurrentSearch"]" class="col-3 border-right">Popularidade</a>
+			<a asp-action="Index" asp-route-categoria="@TempData["CurrentCategory"]" asp-route-sortBy="@TempData["DateSortParm"]" asp-route-q="@ViewData["CurrentSearch"]" class="col-3 border-right">Data</a>
 		</div>
 	</div>
 	<section class="card-wrapper mt-5">
@@ -85,48 +97,57 @@
 		<ul class="pagination justify-content-center">
 			<li class="page-item disabled">
 				<a asp-action="Index"
-				   asp-route-orderBy="@ViewData["CurrentSort"]"
-				   asp-route-pageNumber="@(Model.PageIndex - 1)"
-				   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+				   asp-route-sortBy="@ViewData["CurrentSort"]"
+				   asp-route-page="@(Model.PageIndex - 1)"
 				   class=" page-link @prevDisabled">
 					&laquo;
 				</a>
 			</li>
 			<li class="page-item active">
 				<a class="page-link" asp-action="Index"
-				   asp-route-orderBy="@ViewData["CurrentSort"]"
-				   asp-route-pageNumber="@(Model.PageIndex )"
-				   asp-route-currentFilter="@ViewData["CurrentFilter"]">@(Model.PageIndex )</a>
+				   asp-route-sortBy="@ViewData["CurrentSort"]"
+				   asp-route-page="@(Model.PageIndex )"
+				   asp-route-q="@TempData["CurrentSearch"]"
+				   asp-route-categoria="@TempData["CurrentCategory"]">
+					@(Model.PageIndex )
+				</a>
 			</li>
 			<li class="page-item">
 				<a class="page-link" asp-action="Index"
-				   asp-route-orderBy="@ViewData["CurrentSort"]"
-				   asp-route-pageNumber="@(Model.PageIndex + 1)"
-				   asp-route-currentFilter="@ViewData["CurrentFilter"]">@(Model.PageIndex + 1)</a>
+				   asp-route-sortBy="@ViewData["CurrentSort"]"
+				   asp-route-page="@(Model.PageIndex + 1)"
+				   asp-route-q="@TempData["CurrentSearch"]"
+				   asp-route-categoria="@TempData["CurrentCategory"]">@(Model.PageIndex + 1)</a>
 			</li>
 			<li class="page-item">
 				<a class="page-link" asp-action="Index"
-				   asp-route-orderBy="@ViewData["CurrentSort"]"
-				   asp-route-pageNumber="@(Model.PageIndex + 2)"
-				   asp-route-currentFilter="@ViewData["CurrentFilter"]">@(Model.PageIndex + 2)</a>
+				   asp-route-sortBy="@ViewData["CurrentSort"]"
+				   asp-route-page="@(Model.PageIndex + 2)"
+				   asp-route-q="@TempData["CurrentSearch"]"
+				   asp-route-categoria="@TempData["CurrentCategory"]">@(Model.PageIndex + 2)</a>
 			</li>
 			<li class="page-item">
 				<a class="page-link" asp-action="Index"
-				   asp-route-orderBy="@ViewData["CurrentSort"]"
-				   asp-route-pageNumber="@(Model.PageIndex +3 )"
-				   asp-route-currentFilter="@ViewData["CurrentFilter"]">@(Model.PageIndex + 3)</a>
+				   asp-route-sortBy="@ViewData["CurrentSort"]"
+				   asp-route-page="@(Model.PageIndex +3 )"
+				   asp-route-q="@TempData["CurrentSearch"]"
+				   asp-route-categoria="@TempData["CurrentCategory"]">@(Model.PageIndex + 3)</a>
 			</li>
 			<li class="page-item">
 				<a class="page-link" asp-action="Index"
-				   asp-route-orderBy="@ViewData["CurrentSort"]"
-				   asp-route-pageNumber="@(Model.PageIndex + 4)"
-				   asp-route-currentFilter="@ViewData["CurrentFilter"]">@(Model.PageIndex + 4)</a>
+				   asp-route-sortBy="@ViewData["CurrentSort"]"
+				   asp-route-page="@(Model.PageIndex + 4)"
+				   asp-route-q="@TempData["CurrentSearch"]"
+				   asp-route-categoria="@TempData["CurrentCategory"]">
+					@(Model.PageIndex + 4)
+				</a>
 			</li>
 			<li class="page-item ">
 				<a class="page-link @nextDisabled" asp-action="Index"
-				   asp-route-orderBy="@ViewData["CurrentSort"]"
-				   asp-route-pageNumber="@(Model.PageIndex + 1)"
-				   asp-route-currentFilter="@ViewData["CurrentFilter"]">
+				   asp-route-sortBy="@ViewData["CurrentSort"]"
+				   asp-route-page="@(Model.PageIndex + 1)"
+				   asp-route-q="@TempData["CurrentSearch"]"
+				   asp-route-categoria="@TempData["CurrentCategory"]">
 					&raquo;
 				</a>
 			</li>
