@@ -1,0 +1,27 @@
+﻿@model WebKuantoKustaScrapper.Models.Website
+
+@{
+	ViewData["Title"] = "Delete";
+}
+
+<h1>Apagar</h1>
+
+<h3>Tem a certeza que pretende apagar o site?</h3>
+<div>
+	<h4>Website</h4>
+	<hr />
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.SiteUrl)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.SiteUrl)
+		</dd>
+	</dl>
+
+	<form asp-action="Delete">
+		<input type="hidden" asp-for="IdWebsite" />
+		<input type="submit" value="Apagar" class="btn btn-danger" /> |
+		<a asp-action="Index">Voltar ao menu</a>
+	</form>
+</div>

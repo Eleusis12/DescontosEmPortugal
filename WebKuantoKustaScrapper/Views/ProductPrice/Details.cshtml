@@ -1,0 +1,94 @@
+﻿@model WebKuantoKustaScrapper.ViewModel.ChartJsViewModel
+
+@{
+	ViewData["Title"] = "Details";
+}
+
+<h1 class="mt-3">Detalhes</h1>
+
+<div>
+	<h4>Produto</h4>
+	<hr />
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Product.Nome)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Product.Nome)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Product.Marca)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Product.Marca)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Product.Imagem)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Product.Imagem)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Product.Website)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Product.Website)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Product.Popularidade)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Product.Popularidade)
+		</dd>
+		<dt class="col-sm-2">
+			Categoria
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Product.IdCategoriaNavigation.Nome)
+		</dd>
+
+		<dt class="col-sm-2">
+			Preço Atual
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Product.IdPrecoNavigation.PrecoAtual)€
+		</dd>
+	</dl>
+</div>
+
+<vc:chartjs chart=@Model.Chart>
+</vc:chartjs>
+
+@*<vc:chartjs chart-data="{
+	type: 'line',
+	data: {
+	labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+	datasets: [{
+	label: 'My First dataset',
+	data: [90.5, 59, 80, 81, 56, 55, 40],
+	backgroundColor: [
+	'rgba(105, 0, 132, .2)',
+	],
+	borderColor: [
+	'rgba(200, 99, 132, .7)',
+	],
+	borderWidth: 2
+	},
+	{
+	label: 'My Second dataset',
+	data: [28, 48, 40, 19, 86, 27, 90],
+	backgroundColor: [
+	'rgba(0, 137, 132, .2)',
+	],
+	borderColor: [
+	'rgba(0, 10, 130, .7)',
+	],
+	borderWidth: 2
+	}
+	]
+	},
+	options: {
+	responsive: true
+	}
+	}">
+	</vc:chartjs>*@
