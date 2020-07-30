@@ -1,0 +1,6 @@
+﻿CREATE TABLE Categoria(
+	ID			INTEGER			NOT NULL						IDENTITY(1,1),
+	Nome		VARCHAR(30)		NOT NULL						UNIQUE,	
+
+	PRIMARY KEY (ID),
+);

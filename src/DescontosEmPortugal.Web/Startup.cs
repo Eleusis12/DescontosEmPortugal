@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,15 @@ namespace WebKuantoKustaScrapper
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.Configure<CookiePolicyOptions>(options =>
+			{
+				// This lambda determines whether user consent for non-essential
+				// cookies is needed for a given request.
+				options.CheckConsentNeeded = context => true;
+				// requires using Microsoft.AspNetCore.Http;
+				options.MinimumSameSitePolicy = SameSiteMode.None;
+			});
+
 			services.AddDbContext<ProdutosContext>(
 				options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
 				);
@@ -51,6 +61,7 @@ namespace WebKuantoKustaScrapper
 			app.UseRouting();
 
 			app.UseAuthorization();
+			app.UseCookiePolicy();
 
 			app.UseEndpoints(endpoints =>
 			{

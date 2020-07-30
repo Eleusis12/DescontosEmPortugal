@@ -39,11 +39,12 @@ namespace WebKuantoKustaScrapper.Controllers
 			TempData["CurrentCategory"] = productPriceParams.Categoria;
 
 			// Sorting
-			ViewData["CurrentSort"] = productPriceParams.SortBy;
+			TempData["CurrentSort"] = productPriceParams.SortBy;
 			TempData["PopularitySortParm"] = productPriceParams.SortBy == null || productPriceParams.SortBy == EnumSortBy.PopularityDesc ? EnumSortBy.PopularityAsc : EnumSortBy.PopularityDesc;
 			TempData["NameSortParm"] = productPriceParams.SortBy == EnumSortBy.NameDesc ? EnumSortBy.NameAsc : EnumSortBy.NameDesc;
 			TempData["DateSortParm"] = productPriceParams.SortBy == EnumSortBy.DateAsc ? EnumSortBy.DateDesc : EnumSortBy.DateAsc;
 			TempData["PriceSortParm"] = productPriceParams.SortBy == EnumSortBy.PriceAsc ? EnumSortBy.PriceDesc : EnumSortBy.PriceAsc;
+			ViewData["LowestPriceParm"] = productPriceParams.LowestPriceEver ?? false;
 
 			var categorias = LoadCategorySelect(productPriceParams);
 

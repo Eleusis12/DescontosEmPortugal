@@ -2,6 +2,13 @@
 	z-index: 10000;
 }
 
+#leftbar {
+	position: absolute;
+	top: 60px;
+	left: 15px;
+	width: 10%;
+}
+
 .card-wrapper {
 	box-sizing border-box;
 	display: grid;
