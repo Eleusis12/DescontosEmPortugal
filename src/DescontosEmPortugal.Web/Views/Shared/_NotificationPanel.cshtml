@@ -1,0 +1,32 @@
+﻿@if (TempData["message"] != null && TempData["icon"] != null)
+{
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+	<script>
+
+		console.log("estou aqui");
+	const Toast = Swal.mixin({
+	toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+
+            onOpen: (toast) =>
+			{
+				toast.addEventListener('mouseenter', Swal.stopTimer)
+
+				toast.addEventListener('mouseleave', Swal.resumeTimer)
+
+			}
+
+		})
+
+        Toast.fire({
+	icon: '@Html.Raw(TempData["icon"])',
+            title: '@Html.Raw(TempData["message"])'
+
+		})
+	</script>
+
+}

@@ -1,4 +1,10 @@
-﻿@model DescontosEmPortugal.Web.ViewModel.ContactViewModel
+﻿@{
+	ViewBag.Title = "ContactUs";
+	Layout = "_Layout";
+}
+
+@model DescontosEmPortugal.Web.ViewModel.ContactViewModel
+
 <form asp-action="Contact" method="post">
 	<div class="container container-contact-form form-contact mt-3">
 		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -12,7 +18,7 @@
 		<span asp-validation-for="@Model.LastName" class="text-danger d-block mb-1"></span>
 
 		<label asp-for="@Model.Email">Email</label>
-		<input asp-for="@Model.Email" type="text" id="lname" placeholder="email...">
+		<input asp-for="@Model.Email" type="text" id="lname" placeholder="Email...">
 		<span asp-validation-for="@Model.Email" class="text-danger d-block mb-1"> </span>
 
 		<label asp-for="@Model.Country">País</label>

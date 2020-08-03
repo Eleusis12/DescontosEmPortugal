@@ -32,7 +32,6 @@ namespace DescontosEmPortugal.Web.Controllers
 			// Definimos que queremos apresentar 20 produtos por página (no máximo)
 			int pageSize = 20;
 			//ViewData["CurrentFilterChoice"] = string.Empty;
-			productPriceParams.LowestPriceEver = true;
 			// Filtering
 			TempData["CurrentSearch"] = productPriceParams.Q;
 			TempData["CurrentCategory"] = productPriceParams.Categoria;

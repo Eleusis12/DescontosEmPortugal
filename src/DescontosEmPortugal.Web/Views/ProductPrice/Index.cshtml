@@ -20,7 +20,10 @@
 		<div class="form-group">
 			<div class="text-dark border-bottom bg-light"> Aplica filtro</div>
 			<div class="p-1">
-				<input class="toggle" name="lowestPriceEver" value="true" type="checkbox" checked="@ViewData["LowestPriceParm"]" />
+				<input class="toggle" name="lowestPriceEver" type="checkbox" value="true" checked="@ViewData["LowestPriceParm"]" />
+				<input type="hidden" name="categoria" value="@TempData["CurrentCategory"]" />
+				<input type="hidden" name="q" value="@ViewData["CurrentSearch"]" />
+				<input type="hidden" name="sortBy" value="@ViewData["CurrentSort"]" />
 
 				@*<input type="checkbox" name="lowestPriceEver" data-val="true" id="lowestPriceEver" value="true" checked />
 					<input type="hidden" value="false" name="lowestPriceEver" />*@

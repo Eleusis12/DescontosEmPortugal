@@ -7,11 +7,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using DescontosEmPortugal.Web.ViewModel;
+using DescontosEmPortugal.Web.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace DescontosEmPortugal.Web.Controllers
 {
-	public class ContactUsController : Controller
+	public class ContactUsController : DescontosEmPortugal.Web.BaseController.BaseController
 	{
+		private readonly ILogger _logger;
+
+		public ContactUsController(ILogger<ContactUsController> logger)
+		{
+			_logger = logger;
+		}
+
 		// GET: ContactUs
 		public ActionResult Index()
 		{
@@ -53,8 +62,29 @@ namespace DescontosEmPortugal.Web.Controllers
 					smtp.Host = "smtp.office365.com";//address webmail
 					smtp.Port = 587;
 					smtp.EnableSsl = true;
-					await smtp.SendMailAsync(message);
-					return RedirectToAction("Index");
+
+					try
+					{
+						await smtp.SendMailAsync(message);
+						Notification("Mensagem enviada com sucesso", NotificationType.success);
+					}
+					catch (SmtpFailedRecipientsException recipientsException)
+					{
+						_logger.LogError($"Failed recipients: {string.Join(", ", recipientsException.InnerExceptions.Select(fr => fr.FailedRecipient))}");
+						Notification("Não foi possível enviar a mensagem", NotificationType.error);
+					}
+					catch (SmtpFailedRecipientException recipientException)
+					{
+						_logger.LogError($"Failed recipient: {recipientException.FailedRecipient}");
+						Notification("Não foi possível enviar a mensagem", NotificationType.error);
+					}
+					catch (SmtpException smtpException)
+					{
+						_logger.LogError(smtpException.Message);
+						Notification("Não foi possível enviar a mensagem", NotificationType.error);
+					}
+
+					return RedirectToAction(nameof(Index));
 				}
 			}
 			return View();
