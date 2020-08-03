@@ -1,4 +1,5 @@
-﻿using Library.Helpers;
+﻿using DescontosEmPortugal.Database.Helpers;
+using DescontosEmPortugal.Database.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,9 +7,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebScrapper.Models;
 
-namespace WebScrapper.Database
+namespace DescontosEmPortugal.Database
 {
 	public static class DataBaseAccessProcessing
 	{

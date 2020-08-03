@@ -1,6 +1,6 @@
 using System;
 
-namespace WebKuantoKustaScrapper.Models
+namespace DescontosEmPortugal.Web.Models
 {
 	public class ErrorViewModel
 	{

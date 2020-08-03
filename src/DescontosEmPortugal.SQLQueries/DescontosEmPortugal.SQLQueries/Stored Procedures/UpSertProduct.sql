@@ -1,5 +1,5 @@
 ﻿
-alter PROCEDURE UpSertProduct
+CREATE PROCEDURE UpSertProduct
 	@ID				 VARCHAR(100),
 	@Name			 VARCHAR(200),
 	@Brand			 VARCHAR(100),
@@ -112,6 +112,15 @@ ELSE
 				-- dá null aqui
 				SELECT @ID_Preco = ID_Preco FROM Preco WHERE ID_Preco = @@identity;
 			
+					INSERT INTO [dbo].[Preco_Variacoes]
+						([ID_Preco]
+						,[Preco]
+						,[Data_Alteracao])
+					VALUES
+						(@ID_Preco
+						,@CurrentPrice
+						,GETDATE())
+
 
 
 

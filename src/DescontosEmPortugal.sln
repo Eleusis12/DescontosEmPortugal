@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DescontosEmPortugal.Web", "
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DescontosEmPortugal.SQLQueries", "DescontosEmPortugal.SQLQueries\DescontosEmPortugal.SQLQueries\DescontosEmPortugal.SQLQueries.sqlproj", "{F0F0BA94-8BB2-48BA-A466-51E233F5498B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DescontosEmPortugal.Database", "DescontosEmPortugal.Database\DescontosEmPortugal.Database.csproj", "{C6685F91-2FA6-4F38-820A-3821D21CF14E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DescontosEmPortugal.Tests", "DescontosEmPortugal.Tests\DescontosEmPortugal.Tests.csproj", "{F502D9CE-0FA9-449F-8907-D6DF5F7A4524}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,14 @@ Global
 		{F0F0BA94-8BB2-48BA-A466-51E233F5498B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0F0BA94-8BB2-48BA-A466-51E233F5498B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F0F0BA94-8BB2-48BA-A466-51E233F5498B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{C6685F91-2FA6-4F38-820A-3821D21CF14E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6685F91-2FA6-4F38-820A-3821D21CF14E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6685F91-2FA6-4F38-820A-3821D21CF14E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6685F91-2FA6-4F38-820A-3821D21CF14E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F502D9CE-0FA9-449F-8907-D6DF5F7A4524}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F502D9CE-0FA9-449F-8907-D6DF5F7A4524}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F502D9CE-0FA9-449F-8907-D6DF5F7A4524}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F502D9CE-0FA9-449F-8907-D6DF5F7A4524}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Threading.Tasks;
+using DescontosEmPortugal.Web.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,9 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebKuantoKustaScrapper.Models;
 
-namespace WebKuantoKustaScrapper
+namespace DescontosEmPortugal.Web
 {
 	public class Startup
 	{

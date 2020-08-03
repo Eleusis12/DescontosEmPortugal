@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebKuantoKustaScrapper.Models
+namespace DescontosEmPortugal.Web.Models
 {
     public partial class PrecoVariacoes
     {

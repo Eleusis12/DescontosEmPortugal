@@ -26,11 +26,23 @@ CREATE TABLE Product(
   --REFERENCES Categoria(ID)
   --ON DELETE CASCADE;
 
-	 -- ALTER TABLE Product 
-  --ADD CONSTRAINT fk_name_product_preco
-  --FOREIGN KEY (ID_Preco)
-  --REFERENCES Preco(ID_Preco)
-  --ON DELETE CASCADE;
+  
+
+--  USE [Produtos]
+--GO
+
+--ALTER TABLE [dbo].[Product] DROP CONSTRAINT [FK__Product__ID_Prec__603D47BB]
+--GO
+
+--ALTER TABLE [dbo].[Product]  WITH CHECK ADD FOREIGN KEY([ID_Preco])
+--REFERENCES [dbo].[Preco] ([ID_Preco])  ON DELETE CASCADE;
+--GO
+
+--USE [Produtos]
+--GO
+
+
+
 
   --  ALTER TABLE Product 
   --ADD CONSTRAINT fk_name_product_pesquisa

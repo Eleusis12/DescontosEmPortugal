@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebKuantoKustaScrapper.Enums;
+using DescontosEmPortugal.Web.Enums;
 
-namespace WebKuantoKustaScrapper.ViewModel
+namespace DescontosEmPortugal.Web.ViewModel
 {
 	public class ProductPriceParams
 	{

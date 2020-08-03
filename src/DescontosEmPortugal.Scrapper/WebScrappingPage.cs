@@ -1,7 +1,8 @@
 ﻿using AngleSharp;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using Library.Helpers;
+using DescontosEmPortugal.Database.Helpers;
+using DescontosEmPortugal.Database.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +14,7 @@ using WebScrapper.Models;
 
 namespace ConsoleWebScrapperKuantoKusta
 {
-	internal class WebScrappingPage
+	public class WebScrappingPage
 	{
 		public int NumberPage { get; set; } = 1;
 

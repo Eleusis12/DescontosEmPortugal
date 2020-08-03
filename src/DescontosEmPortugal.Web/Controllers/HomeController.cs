@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using DescontosEmPortugal.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebKuantoKustaScrapper.Models;
 
-namespace WebKuantoKustaScrapper.Controllers
+namespace DescontosEmPortugal.Web.Controllers
 {
 	public class HomeController : Controller
 	{

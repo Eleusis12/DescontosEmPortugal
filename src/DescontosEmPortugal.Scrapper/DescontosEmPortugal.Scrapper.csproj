@@ -10,6 +10,9 @@
     <PackageReference Include="Colorful.Console" Version="1.2.10" />
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
     <PackageReference Include="ConsoleTables" Version="2.4.2" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DescontosEmPortugal.Database\DescontosEmPortugal.Database.csproj" />
   </ItemGroup>
 </Project>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebKuantoKustaScrapper.Helpers
+namespace DescontosEmPortugal.Web.Helpers
 
 {
 	public class PaginatedListProducts<T> : List<T>

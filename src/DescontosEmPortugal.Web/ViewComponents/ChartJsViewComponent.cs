@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DescontosEmPortugal.Web.Models;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using WebKuantoKustaScrapper.Models;
-using WebKuantoKustaScrapper.ViewModel;
+using DescontosEmPortugal.Web.ViewModel;
 
-namespace WebKuantoKustaScrapper.ViewComponents
+namespace DescontosEmPortugal.Web.ViewComponents
 {
 	[ViewComponent(Name = "chartjs")]
 	public class ChartJsViewComponent : ViewComponent
@@ -31,6 +31,11 @@ namespace WebKuantoKustaScrapper.ViewComponents
 		public IViewComponentResult Invoke(ChartJS chart)
 		{
 			// Ref: https://www.chartjs.org/docs/latest/
+
+			string teste = JsonConvert.SerializeObject(chart, new JsonSerializerSettings
+			{
+				NullValueHandling = NullValueHandling.Ignore
+			});
 
 			var chartModel = new ChartJsViewModel
 			{

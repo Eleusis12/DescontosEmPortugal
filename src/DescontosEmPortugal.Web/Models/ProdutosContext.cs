@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace WebKuantoKustaScrapper.Models
+namespace DescontosEmPortugal.Web.Models
 {
     public partial class ProdutosContext : DbContext
     {
@@ -134,8 +134,7 @@ namespace WebKuantoKustaScrapper.Models
                 entity.HasOne(d => d.IdPrecoNavigation)
                     .WithMany(p => p.Product)
                     .HasForeignKey(d => d.IdPreco)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Product__ID_Prec__603D47BB");
+                    .HasConstraintName("FK__Product__ID_Prec__45544755");
             });
 
             modelBuilder.Entity<SitesAverificar>(entity =>
@@ -154,7 +153,6 @@ namespace WebKuantoKustaScrapper.Models
                 entity.HasOne(d => d.IdCategoriaNavigation)
                     .WithMany(p => p.SitesAverificar)
                     .HasForeignKey(d => d.IdCategoria)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__SitesAVer__ID_Ca__59904A2C");
 
                 entity.HasOne(d => d.IdWebsiteNavigation)

@@ -4,18 +4,17 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using AutoMapper;
+using DescontosEmPortugal.Web.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using WebKuantoKustaScrapper.Enums;
-using WebKuantoKustaScrapper.Helpers;
-using WebKuantoKustaScrapper.Models;
-using WebKuantoKustaScrapper.ViewModel;
+using DescontosEmPortugal.Web.Enums;
+using DescontosEmPortugal.Web.Helpers;
+using DescontosEmPortugal.Web.ViewModel;
 
-namespace WebKuantoKustaScrapper.Controllers
+namespace DescontosEmPortugal.Web.Controllers
 {
 	public class ProductPriceController : Controller
 	{
@@ -33,13 +32,13 @@ namespace WebKuantoKustaScrapper.Controllers
 			// Definimos que queremos apresentar 20 produtos por página (no máximo)
 			int pageSize = 20;
 			//ViewData["CurrentFilterChoice"] = string.Empty;
-
+			productPriceParams.LowestPriceEver = true;
 			// Filtering
 			TempData["CurrentSearch"] = productPriceParams.Q;
 			TempData["CurrentCategory"] = productPriceParams.Categoria;
 
 			// Sorting
-			TempData["CurrentSort"] = productPriceParams.SortBy;
+			ViewData["CurrentSort"] = productPriceParams.SortBy;
 			TempData["PopularitySortParm"] = productPriceParams.SortBy == null || productPriceParams.SortBy == EnumSortBy.PopularityDesc ? EnumSortBy.PopularityAsc : EnumSortBy.PopularityDesc;
 			TempData["NameSortParm"] = productPriceParams.SortBy == EnumSortBy.NameDesc ? EnumSortBy.NameAsc : EnumSortBy.NameDesc;
 			TempData["DateSortParm"] = productPriceParams.SortBy == EnumSortBy.DateAsc ? EnumSortBy.DateDesc : EnumSortBy.DateAsc;
@@ -64,7 +63,7 @@ namespace WebKuantoKustaScrapper.Controllers
 			//TempData["CurrentFilter"] = productPriceParams.q ?? productPriceParams.categoria.ToString();
 
 			// Obtém todos os produtos disponíveis na base de dados
-			var produtos = _context.Product.Include(x => x.IdCategoriaNavigation).Include(x => x.IdPrecoNavigation).AsQueryable();
+			var produtos = _context.Product.Include(x => x.IdCategoriaNavigation).Include(x => x.IdPrecoNavigation).Select(x => x);
 
 			//ViewData["PopularitySortParm"] = String.IsNullOrEmpty(productPriceParams.sortBy) ? "pop_desc" : "";
 			//ViewData["NameSortParm"] = productPriceParams.sortBy == "Name" ? "name_desc" : "Name";
@@ -213,36 +212,40 @@ namespace WebKuantoKustaScrapper.Controllers
 			ChartJsViewModel chartJS = new ChartJsViewModel();
 			ChartJS chart = new ChartJS();
 			Data data = new Data();
-			Dataset dataset = new Dataset();
-			Options options = new Options();
 
 			chartJS.Product = product;
 
 			// Queremos um gráfico linear
 
-			List<Tuple<string, float>> dataList = new List<Tuple<string, float>>();
+			int i = 2;
+			List<Datum> dataList = new List<Datum>();
 			foreach (var item in product.IdPrecoNavigation.PrecoVariacoes)
 			{
 				// Queremos as datas assim com as mudanças  de preço
-				dataList.Add(Tuple.Create(item.DataAlteracao.ToString(), item.Preco));
+				dataList.Add(new Datum { x = item.DataAlteracao.ToString("MM/dd/yyyy"), y = item.Preco });
+				i++;
 			}
 
-			dataList = dataList.OrderBy(o => o.Item1).ToList();
+			// Ordenar a lista de acordo com a data
+			//dataList = dataList.OrderBy(o => o.t).ToList();
 
-			String[] labelsArray = dataList.Select(o => o.Item1).ToArray();
-			float[] dataArray = dataList.Select(o => o.Item2).ToArray();
-
-			data.labels = labelsArray;
+			Datum[] dataListArray = dataList.ToArray();
+			data.datasets = new Dataset[] {
+				new Dataset
+				{
+					label= product.Nome,
+					data =dataListArray,
+					backgroundColor = new string[] { "rgba(255,195,160, .5)" },
+					borderColor = new string[] { "rgba(253,165,92, .7)" },
+					borderWidth = 2,
+				}
+			};
 
 			//chart.data.datasets.;
 
-			dataset.label = product.Nome;
-			dataset.data = dataArray;
-			dataset.backgroundColor = new string[] { "rgba(105, 0, 132, .2)" };
-			dataset.borderColor = new string[] { "rgba(200, 99, 132, .7)" };
-			dataset.borderWidth = 2;
+			//			data.datasets = new Dataset[] { dataset
+			//};
 
-			data.datasets = new Dataset[] { dataset };
 			//	{
 			//label = product.Nome,
 			//data = dataArray,
@@ -253,8 +256,21 @@ namespace WebKuantoKustaScrapper.Controllers
 			//};
 
 			chart.type = "line";
-			options.responsive = true;
-			chart.options = options;
+			chart.options = new Options
+			{
+				responsive = true,
+				scales = new Scales
+				{
+					xAxes = new Xax[]
+					{
+					new Xax
+					{
+						type = "time",
+						time= new Time{ unit="day", unitStepSize=1, displayFormats=new DisplayFormats{ day= "MMM DD" } }
+					}
+				}
+				},
+			};
 			chart.data = data;
 
 			chartJS.Chart = chart;

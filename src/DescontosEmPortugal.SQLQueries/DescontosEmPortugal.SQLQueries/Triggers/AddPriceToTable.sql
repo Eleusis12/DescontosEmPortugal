@@ -1,4 +1,4 @@
-﻿CREATE TRIGGER AddPriceToTable 
+﻿create TRIGGER AddPriceToTable 
 ON Preco 
 INSTEAD OF INSERT 
 AS
@@ -14,19 +14,12 @@ AS
 			SET @Valor_MaisBaixo =  @Valor_Atual + 1
 			
 
-			INSERT INTO [dbo].[Preco_Variacoes]
-						([ID_Preco]
-						,[Preco]
-						,[Data_Alteracao])
-					VALUES
-						(@ID_Preco
-						,@Valor_Atual
-						,GETDATE())
-
-
+			
 			-- INSERE NA TABELA OS DADOS
 			INSERT INTO [dbo].[Preco]
 					   (
+					  
+					 
 					   [Preco_Atual],
 					   [Preco_MaisBaixo],
 					   [Preco_MaisBaixo_flag],
@@ -35,6 +28,11 @@ AS
 					   [Soma],
 					   [Contador]
 					   ) VALUES (@Valor_Atual,@Valor_Atual, 1,1, GETDATE(), @Valor_Atual, 1)
+
+
+
+	
+
 		
 			
 

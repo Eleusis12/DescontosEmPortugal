@@ -1,10 +1,11 @@
-﻿using System;
+﻿using DescontosEmPortugal.Database;
+using DescontosEmPortugal.Database.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebScrapper.Database;
 using WebScrapper.Models;
 
 namespace WebScrapper.AcessDataBase

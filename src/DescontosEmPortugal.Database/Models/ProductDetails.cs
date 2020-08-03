@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebScrapper.Models
+namespace DescontosEmPortugal.Database.Models
 {
 	public class ProductDetails
 	{

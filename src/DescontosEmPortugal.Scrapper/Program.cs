@@ -4,6 +4,7 @@ using AngleSharp.Html.Dom;
 using Colorful;
 using CommandLine;
 using ConsoleTables;
+using DescontosEmPortugal.Database.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,6 +26,21 @@ namespace ConsoleWebScrapperKuantoKusta
 
 		private static async Task Main(string[] args)
 		{
+			// Prepara o programa
+			Setup();
+
+			// Faz o parser ao argumentos enviados ao programa
+			Parser.Default.ParseArguments<Options>(args)
+			  .WithParsed(Run)
+			  .WithNotParsed(HandleParseError);
+
+			// Executa o programa
+			await RunAsync();
+		}
+
+		private static void Setup()
+		{
+			// Define o aspeto da aplicação
 			StyleSheet styleSheet = new StyleSheet(Color.White);
 			string target = @"\[(.*?)\]";
 			styleSheet.AddStyle(target, Color.Gray);
@@ -32,23 +48,25 @@ namespace ConsoleWebScrapperKuantoKusta
 			styleSheet.AddStyle(@"\[(WARNING)\]", Color.Yellow);
 			styleSheet.AddStyle(@"\[(CRITICAL)\]", Color.Red);
 
+			// Define o tamanho da janela da aplicação
+			System.Console.BufferWidth = 150;
+			System.Console.SetWindowSize(System.Console.BufferWidth, 25);
+
+			// Prepara o Model
 			M_Options = new WebScrapper.Models.Options();
 			M_Options.StyleConsole = styleSheet;
+		}
 
+		private static async Task RunAsync()
+		{
 			Colorful.Console.WriteAscii("KuantoKusta Scrapper", Color.FromArgb(244, 212, 255));
-			Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Bem vindo ao Programa", styleSheet);
-
-			Parser.Default.ParseArguments<Options>(args)
-			  .WithParsed(Run)
-			  .WithNotParsed(HandleParseError);
-
-			Colorful.Console.ReadKey();
+			Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Bem vindo ao Programa", M_Options.StyleConsole);
 
 			//}
 
 			WebScrappingPage scrappingPage = new WebScrappingPage();
 
-			Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Vamos proceder ao ínicio da operação de obter os produtos e os respetivos preços", styleSheet);
+			Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Vamos proceder ao ínicio da operação de obter os produtos e os respetivos preços", M_Options.StyleConsole);
 
 			DataTable dt = AcessDataBase.GetAllUrl();
 
@@ -56,8 +74,8 @@ namespace ConsoleWebScrapperKuantoKusta
 			{
 				if (dt.Rows.Count == 0)
 				{
-					Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [WARNING] Não foi possível obter nenhum link", styleSheet);
-					Colorful.Console.WriteStyled($"[{DateTime.Now:HH:mm:ss}] Pretende adicionar algum link através da consola? (Y/N): ", styleSheet);
+					Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [WARNING] Não foi possível obter nenhum link", M_Options.StyleConsole);
+					Colorful.Console.WriteStyled($"[{DateTime.Now:HH:mm:ss}] Pretende adicionar algum link através da consola? (Y/N): ", M_Options.StyleConsole);
 
 					// Variáveis locais
 					string ch;
@@ -79,34 +97,34 @@ namespace ConsoleWebScrapperKuantoKusta
 							// Criar detalhes do website para guardar na base de dados
 							WebsiteDetails websiteDetails = new WebsiteDetails();
 
-							Colorful.Console.WriteStyled($"[{DateTime.Now:HH:mm:ss}] Insira aqui o link (Pressiona ESC para cancelar): ", styleSheet);
+							Colorful.Console.WriteStyled($"[{DateTime.Now:HH:mm:ss}] Insira aqui o link (Pressiona ESC para cancelar): ", M_Options.StyleConsole);
 							websiteDetails.WebsiteUrl = ReadLineWithCancel();
 							Colorful.Console.WriteLine();
-							Colorful.Console.WriteStyled($"[{DateTime.Now:HH:mm:ss}] Insira o nome da Categoria associado ao link colocado acima: ", styleSheet);
+							Colorful.Console.WriteStyled($"[{DateTime.Now:HH:mm:ss}] Insira o nome da Categoria associado ao link colocado acima: ", M_Options.StyleConsole);
 							websiteDetails.Category = Colorful.Console.ReadLine();
 
 							if (link != null)
 							{
 								AcessDataBase.InsertWebsiteDetailsIntoDataBase(websiteDetails);
-								Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Link Foi adicionado com sucesso à base de dados", styleSheet);
+								Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Link Foi adicionado com sucesso à base de dados", M_Options.StyleConsole);
 							}
 						} while (link != null);
 
 						if (link == null && ((dt = AcessDataBase.GetAllUrl()) == null) && dt.Rows.Count == 0)
 						{
-							Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [CRITICAL] Nenhum link foi adicionado para fazer a verificação", styleSheet);
-							Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] O programa vai encerrar", styleSheet);
+							Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [CRITICAL] Nenhum link foi adicionado para fazer a verificação", M_Options.StyleConsole);
+							Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] O programa vai encerrar", M_Options.StyleConsole);
 							Thread.Sleep(1000);
 							return;
 						}
 						else
 						{
-							PrintLinksToBeParsed(styleSheet, dt);
+							PrintLinksToBeParsed(M_Options.StyleConsole, dt);
 						}
 					}
 					else if (ch.ToLower() == "N".ToLower())
 					{
-						Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] O programa vai encerrar", styleSheet);
+						Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] O programa vai encerrar", M_Options.StyleConsole);
 						Thread.Sleep(1000);
 						return;
 					}
@@ -121,7 +139,7 @@ namespace ConsoleWebScrapperKuantoKusta
 				}
 				else
 				{
-					PrintLinksToBeParsed(styleSheet, dt);
+					PrintLinksToBeParsed(M_Options.StyleConsole, dt);
 				}
 			}
 
@@ -149,7 +167,7 @@ namespace ConsoleWebScrapperKuantoKusta
 				string siteUrl = row["SiteUrl"].ToString();
 				string Categoria = row["Nome"].ToString();
 
-				Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Preparar para fazer o parsing dos produtos dentro da categoria: {Categoria}", styleSheet);
+				Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Preparar para fazer o parsing dos produtos dentro da categoria: {Categoria}", Program.M_Options.StyleConsole);
 
 				List<ProductDetails> productDetails = await scrappingPage.ScrapeWebsiteAsync(siteUrl);
 
@@ -160,11 +178,11 @@ namespace ConsoleWebScrapperKuantoKusta
 					if (AcessDataBase.InsertProductDetailsIntoDataBase(produto, SearchID))
 					{
 						numberOfElementsInsertedIntoTable++;
-						Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Produto com nome: {produto.ProductName} foi adicionado à base de dados", styleSheet);
+						Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Produto com nome: {produto.ProductName} foi adicionado à base de dados", Program.M_Options.StyleConsole);
 					}
 				}
 			}
-			Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Atualizado a base de dados com sucesso. Foram inseridos {numberOfElementsInsertedIntoTable} produtos na tabela de dados", styleSheet);
+			Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Atualizado a base de dados com sucesso. Foram inseridos {numberOfElementsInsertedIntoTable} produtos na tabela de dados", Program.M_Options.StyleConsole);
 		}
 
 		private static void ReadWebsiteDetailsFromFile(string filePath)

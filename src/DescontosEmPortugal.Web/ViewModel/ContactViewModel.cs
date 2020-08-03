@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebKuantoKustaScrapper.ViewModel
+namespace DescontosEmPortugal.Web.ViewModel
 {
 	public class ContactViewModel
 	{

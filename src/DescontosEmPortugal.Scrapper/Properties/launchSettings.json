@@ -2,7 +2,6 @@
   "profiles": {
     "ConsoleWebScrapperKuantoKusta": {
       "commandName": "Project",
-      "commandLineArgs": "-add https://www.kuantokusta.pt/informatica/Imagem/Monitores https://www.kuantokusta.pt/informatica/Imagem/Impressoras-e-Multifuncoes",
       "remoteDebugEnabled": false
     }
   }

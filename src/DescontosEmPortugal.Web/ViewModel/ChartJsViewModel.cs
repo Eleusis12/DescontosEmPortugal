@@ -1,10 +1,10 @@
-﻿using System;
+﻿using DescontosEmPortugal.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebKuantoKustaScrapper.Models;
 
-namespace WebKuantoKustaScrapper.ViewModel
+namespace DescontosEmPortugal.Web.ViewModel
 {
 	public class ChartJsViewModel
 	{

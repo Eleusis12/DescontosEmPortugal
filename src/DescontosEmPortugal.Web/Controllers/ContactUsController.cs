@@ -6,9 +6,9 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebKuantoKustaScrapper.ViewModel;
+using DescontosEmPortugal.Web.ViewModel;
 
-namespace WebKuantoKustaScrapper.Controllers
+namespace DescontosEmPortugal.Web.Controllers
 {
 	public class ContactUsController : Controller
 	{
