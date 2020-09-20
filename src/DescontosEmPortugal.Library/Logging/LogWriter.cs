@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace DescontosEmPortugal.Database.Helpers
+namespace DescontosEmPortugal.Library.Logging
 {
 	public class LogWriter
 	{

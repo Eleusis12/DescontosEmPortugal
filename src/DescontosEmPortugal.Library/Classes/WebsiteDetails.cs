@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DescontosEmPortugal.Database.Models
+namespace DescontosEmPortugal.Library.Classes
 {
 	public class WebsiteDetails
 	{

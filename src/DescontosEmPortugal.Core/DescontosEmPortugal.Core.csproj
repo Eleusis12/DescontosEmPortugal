@@ -5,11 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+    <PackageReference Include="AngleSharp" Version="0.14.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DescontosEmPortugal.Library\DescontosEmPortugal.Library.csproj" />
+    <ProjectReference Include="..\DescontosEmPortugal.Database\DescontosEmPortugal.Database.csproj" />
   </ItemGroup>
 </Project>

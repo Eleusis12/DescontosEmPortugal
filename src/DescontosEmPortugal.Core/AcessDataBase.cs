@@ -6,9 +6,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebScrapper.Models;
 
-namespace WebScrapper.AcessDataBase
+namespace DescontosEmPortugal.Core
 {
 	public static class AcessDataBase
 	{

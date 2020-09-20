@@ -4,7 +4,7 @@ using AngleSharp.Html.Dom;
 using Colorful;
 using CommandLine;
 using ConsoleTables;
-using DescontosEmPortugal.Database.Models;
+using DescontosEmPortugal.Library.Classes;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -50,7 +50,7 @@ namespace ConsoleWebScrapperKuantoKusta
 
 			// Define o tamanho da janela da aplicação
 			System.Console.BufferWidth = 150;
-			System.Console.SetWindowSize(System.Console.BufferWidth, 25);
+			System.Console.SetWindowSize(System.Console.BufferWidth, 50);
 
 			// Prepara o Model
 			M_Options = new WebScrapper.Models.Options();
@@ -178,7 +178,7 @@ namespace ConsoleWebScrapperKuantoKusta
 					if (AcessDataBase.InsertProductDetailsIntoDataBase(produto, SearchID))
 					{
 						numberOfElementsInsertedIntoTable++;
-						Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Produto com nome: {produto.ProductName} foi adicionado à base de dados", Program.M_Options.StyleConsole);
+						Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Adicionado à base de dados: {produto.ProductName} ", Program.M_Options.StyleConsole);
 					}
 				}
 			}

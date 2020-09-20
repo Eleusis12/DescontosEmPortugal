@@ -1,5 +1,5 @@
-﻿using DescontosEmPortugal.Database.Helpers;
-using DescontosEmPortugal.Database.Models;
+﻿using DescontosEmPortugal.Library.Classes;
+using DescontosEmPortugal.Library.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;

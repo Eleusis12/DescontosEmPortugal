@@ -1,7 +1,8 @@
 ﻿using AngleSharp;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-
+using DescontosEmPortugal.Core.Delegates;
+using DescontosEmPortugal.Core.Helpers;
 using DescontosEmPortugal.Library.Classes;
 using DescontosEmPortugal.Library.Logging;
 using System;
@@ -9,15 +10,14 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using WebScrapper.AcessDataBase;
-using WebScrapper.Helpers;
-using WebScrapper.Models;
 
-namespace ConsoleWebScrapperKuantoKusta
+namespace DescontosEmPortugal.Core.Scrapper
 {
-	public class WebScrappingPage
+	public class KuantoKustaScrapper
 	{
 		public int NumberPage { get; set; } = 1;
+
+		public event TaskInProgressHandler Inform;
 
 		public async Task<List<ProductDetails>> ScrapeWebsiteAsync(string siteUrl)
 		{
@@ -25,7 +25,8 @@ namespace ConsoleWebScrapperKuantoKusta
 
 			if (siteUrl.Contains("?sort="))
 			{
-				Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] A ordenar os produtos do mais popular para menos popular:", Program.M_Options.StyleConsole);
+				Inform?.Invoke($"[{DateTime.Now:HH:mm:ss}] [INFO] A ordenar os produtos do mais popular para menos popular:");
+				//Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] A ordenar os produtos do mais popular para menos popular:", Program.M_Options.StyleConsole);
 				siteUrl = siteUrl.Substring(0, siteUrl.IndexOf("?"));
 			}
 			//Use the default configuration for AngleSharp
@@ -33,7 +34,8 @@ namespace ConsoleWebScrapperKuantoKusta
 			//Create a new context for evaluating webpages with the given config
 			var context = BrowsingContext.New(config);
 
-			Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Começa", Program.M_Options.StyleConsole);
+			//Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Começa", Program.M_Options.StyleConsole);
+			Inform?.Invoke("Começa");
 
 			IDocument document = await context.OpenAsync(siteUrl);
 
@@ -51,9 +53,11 @@ namespace ConsoleWebScrapperKuantoKusta
 			int counterPopularity = 1;
 			while (true)
 			{
-				Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Página: {NumberPage}", Program.M_Options.StyleConsole);
+				//Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Página: {NumberPage}", Program.M_Options.StyleConsole);
+				Inform?.Invoke($"Página: {NumberPage}");
 
 				// DIV completo para cada produto
+				Inform?.Invoke(document.ToHtml().ToString());
 				IHtmlCollection<IElement> pricesListItemsLinq = document.QuerySelectorAll("div.product-item");
 
 				foreach (var div in pricesListItemsLinq)
@@ -107,7 +111,8 @@ namespace ConsoleWebScrapperKuantoKusta
 
 					products.Add(product);
 				}
-				Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Lidos {products.Count} produtos", Program.M_Options.StyleConsole);
+				//Colorful.Console.WriteLineStyled($"[{DateTime.Now:HH:mm:ss}] [INFO] Lidos {products.Count} produtos", Program.M_Options.StyleConsole);
+				Inform?.Invoke($"Lidos {products.Count} produtos");
 
 				if ((document = await NavigateToNextPage(document)) == null)
 				{
