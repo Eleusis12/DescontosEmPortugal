@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DescontosEmPortugal.Console
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DescontosEmPortugal.GUI", "DescontosEmPortugal.GUI\DescontosEmPortugal.GUI.csproj", "{4797411D-8DF2-4F9C-8DB5-F03507B9859C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DescontosEmPortugal.Scrapper", "DescontosEmPortugal.Scrapper\DescontosEmPortugal.Scrapper.csproj", "{3DFD5E51-5F08-41B0-BCC6-5345892AA9AB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{4797411D-8DF2-4F9C-8DB5-F03507B9859C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4797411D-8DF2-4F9C-8DB5-F03507B9859C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4797411D-8DF2-4F9C-8DB5-F03507B9859C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3DFD5E51-5F08-41B0-BCC6-5345892AA9AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3DFD5E51-5F08-41B0-BCC6-5345892AA9AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3DFD5E51-5F08-41B0-BCC6-5345892AA9AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3DFD5E51-5F08-41B0-BCC6-5345892AA9AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
